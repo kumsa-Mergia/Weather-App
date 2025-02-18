@@ -5,16 +5,19 @@ const App = () => {
   // Initialize the state for 'data' correctly
   const [data, setData] = useState({});
   const [location, setLocation] = useState("");
-  const url = `http://api.openweathermap.org/geo/1.0/direct?q=${location}&limit=5&appid=a89c714d994a9a01f13358c9f927984d`;
-  
+  const url = `http://api.openweathermap.org/geo/1.0/direct?q=${location}&exclude=current&limit=5&appid=a89c714d994a9a01f13358c9f927984d`;
+
 
   const searchLocation = (event) => {
     if (event.key === 'Enter') {
       axios.get(url).then((response) => {
-        setData(response.data);
+        // Make sure to check if the response data is not empty before accessing its properties
+        if (response.data.length > 0) {
+          setData(response.data[0]); // Use the first location in the array
+        }
         console.log(response.data);
       })
-      setLocation('')
+      setLocation('');
     }
   };
 
@@ -35,7 +38,7 @@ const App = () => {
             <p>{data.name}</p> {/* Display the location name */}
           </div>
           <div className="temp">
-          {data.main ? <h1>{data.main.temp}</h1> : null } {/* Display the temperature */}
+            {data.main ? <h1>{data.main.temp}</h1> : null } {/* Display the temperature */}
           </div>
           <div className="description">
             <p>{data.weather ? data.weather[0].description : null}</p> {/* Weather description */}
