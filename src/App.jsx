@@ -2,22 +2,25 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const App = () => {
-  // Initialize the state for 'data' correctly
   const [data, setData] = useState({});
   const [location, setLocation] = useState("");
-  const url = `http://api.openweathermap.org/geo/1.0/direct?q=${location}&exclude=current&limit=5&appid=a89c714d994a9a01f13358c9f927984d`;
+  const apiKey = "a89c714d994a9a01f13358c9f927984d"; // Store API key
 
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}&units=metric`; // Added units=metric
 
   const searchLocation = (event) => {
-    if (event.key === 'Enter') {
-      axios.get(url).then((response) => {
-        // Make sure to check if the response data is not empty before accessing its properties
-        if (response.data.length > 0) {
-          setData(response.data[0]); // Use the first location in the array
-        }
-        console.log(response.data);
-      })
-      setLocation('');
+    if (event.key === "Enter") {
+      axios
+        .get(url)
+        .then((response) => {
+          setData(response.data); // Directly set the data
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching weather data:", error); // Handle errors
+          setData({}); //reset data on error
+        });
+      setLocation("");
     }
   };
 
@@ -26,34 +29,40 @@ const App = () => {
       <div className="search">
         <input
           value={location}
-          onChange={event => setLocation(event.target.value)}
+          onChange={(event) => setLocation(event.target.value)}
           onKeyUp={searchLocation}
-          placeholder="Enter Location" 
-          type="text" />
+          placeholder="Enter Location"
+          type="text"
+        />
       </div>
       <div className="container">
         {/* Top Section */}
         <div className="top">
           <div className="location">
-            <p>{data.name}</p> {/* Display the location name */}
+            <p>{data.name}</p>
           </div>
           <div className="temp">
-            {data.main ? <h1>{data.main.temp}</h1> : null } {/* Display the temperature */}
+            {data.main ? <h1>{data.main.temp} °C</h1> : null} {/* Added degree C symbol*/}
           </div>
           <div className="description">
-            <p>{data.weather ? data.weather[0].description : null}</p> {/* Weather description */}
+            <p>{data.weather ? data.weather[0].description : null}</p>
           </div>
         </div>
         {/* Bottom Section */}
         <div className="bottom">
           <div className="feels">
-            <p className="bold">{data.main ? `${data.main.feels_like} °F` : null}</p>
+            <p className="bold">
+              {data.main ? `${data.main.feels_like} °C` : null} {/*Added degree C symbol*/}
+            </p>
+            <p>Feels Like</p>
           </div>
           <div className="humidity">
-            <p className="bold">{data.main ? `${data.main.humidity}%` : null}</p>
+            <p className="bold">{data.main ? `${data.main.humidity}%` : null}</p> {/*Added percentage symbol*/}
+            <p>Humidity</p>
           </div>
           <div className="wind">
-            <p className="bold">{data.wind ? `${data.wind.speed} MPH` : null}</p>
+            <p className="bold">{data.wind ? `${data.wind.speed} m/s` : null}</p> {/*Added units*/}
+            <p>Wind Speed</p>
           </div>
         </div>
       </div>
