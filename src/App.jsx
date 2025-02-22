@@ -4,21 +4,22 @@ import axios from "axios";
 const App = () => {
   const [data, setData] = useState({});
   const [location, setLocation] = useState("");
-  const apiKey = "a89c714d994a9a01f13358c9f927984d"; // Store API key
+  // const apiKey = process.env.REACT_APP_WEATHER_API_KEY; 
+  const apiKey = process.env.VITE_WEATHER_API_KEY; // Access the API key
 
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}&units=metric`; // Added units=metric
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}&units=metric`;
 
   const searchLocation = (event) => {
     if (event.key === "Enter") {
       axios
         .get(url)
         .then((response) => {
-          setData(response.data); // Directly set the data
+          setData(response.data);
           console.log(response.data);
         })
         .catch((error) => {
-          console.error("Error fetching weather data:", error); // Handle errors
-          setData({}); //reset data on error
+          console.error("Error fetching weather data:", error);
+          setData({});
         });
       setLocation("");
     }
