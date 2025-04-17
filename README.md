@@ -29,3 +29,14 @@ A sleek and responsive Weather Application built with **React** that fetches rea
 ```bash
 git clone git@github.com:kumsa-Mergia/Weather-App.git
 cd Weather-App
+```
+## Install Dependencies
+```bash
+npm install
+```
+## Set Up Environment Variables
+Create a .env file in the root directory and add your OpenWeather API key:
+```bash
+ REACT_APP_WEATHER_API_KEY=your_api_key_here
+```
+🔑 You can get your API key from OpenWeather.
