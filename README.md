@@ -40,3 +40,9 @@ Create a .env file in the root directory and add your OpenWeather API key:
  REACT_APP_WEATHER_API_KEY=your_api_key_here
 ```
 🔑 You can get your API key from OpenWeather.
+## Start the Development Server
+```bash
+npm run dev
+```
+Open http://localhost:5173 in your browser to view the app.
+
